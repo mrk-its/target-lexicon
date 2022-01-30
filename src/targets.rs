@@ -19,6 +19,7 @@ pub enum Architecture {
     Aarch64(Aarch64Architecture),
     Asmjs,
     Avr,
+    MOS,
     Hexagon,
     X86_32(X86_32Architecture),
     Mips32(Mips32Architecture),
@@ -509,6 +510,7 @@ impl Architecture {
             AmdGcn
             | Asmjs
             | Avr
+            | MOS
             | Hexagon
             | X86_32(_)
             | Mips64(Mips64Architecture::Mips64el)
@@ -543,7 +545,7 @@ impl Architecture {
 
         match self {
             Unknown => Err(()),
-            Avr | Msp430 => Ok(PointerWidth::U16),
+            Avr | Msp430 | MOS => Ok(PointerWidth::U16),
             Arm(arm) => Ok(arm.pointer_width()),
             Aarch64(aarch) => Ok(aarch.pointer_width()),
             Asmjs
@@ -730,6 +732,7 @@ impl fmt::Display for Architecture {
             AmdGcn => f.write_str("amdgcn"),
             Asmjs => f.write_str("asmjs"),
             Avr => f.write_str("avr"),
+            MOS => f.write_str("mos"),
             Hexagon => f.write_str("hexagon"),
             X86_32(x86_32) => x86_32.fmt(f),
             Mips32(mips32) => mips32.fmt(f),
@@ -909,6 +912,7 @@ impl FromStr for Architecture {
             "amdgcn" => AmdGcn,
             "asmjs" => Asmjs,
             "avr" => Avr,
+            "mos" => MOS,
             "hexagon" => Hexagon,
             "msp430" => Msp430,
             "nvptx64" => Nvptx64,
@@ -1322,6 +1326,7 @@ mod tests {
             "armv7s-apple-ios",
             "asmjs-unknown-emscripten",
             "avr-unknown-unknown",
+            "mos-unknown-none",
             "hexagon-unknown-linux-musl",
             "i386-apple-ios",
             "i586-pc-windows-msvc",
